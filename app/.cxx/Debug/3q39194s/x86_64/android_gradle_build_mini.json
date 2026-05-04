@@ -1,0 +1,33 @@
+{
+  "buildFiles": [
+    "C:\\Users\\user\\Downloads\\vibescan_source\\app\\src\\main\\cpp\\CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "C:\\Users\\user\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+      "-C",
+      "C:\\Users\\user\\Downloads\\vibescan_source\\app\\.cxx\\Debug\\3q39194s\\x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "C:\\Users\\user\\AppData\\Local\\Android\\Sdk\\cmake\\3.22.1\\bin\\ninja.exe",
+    "-C",
+    "C:\\Users\\user\\Downloads\\vibescan_source\\app\\.cxx\\Debug\\3q39194s\\x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "vibescan_engine::@6890427a1f51a3e7e1df": {
+      "artifactName": "vibescan_engine",
+      "abi": "x86_64",
+      "output": "C:\\Users\\user\\Downloads\\vibescan_source\\app\\build\\intermediates\\cxx\\Debug\\3q39194s\\obj\\x86_64\\libvibescan_engine.so",
+      "runtimeFiles": []
+    },
+    "kissfft::@6890427a1f51a3e7e1df": {
+      "artifactName": "kissfft",
+      "abi": "x86_64",
+      "output": "C:\\Users\\user\\Downloads\\vibescan_source\\app\\.cxx\\Debug\\3q39194s\\x86_64\\libkissfft.a",
+      "runtimeFiles": []
+    }
+  }
+}

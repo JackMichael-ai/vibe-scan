@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@color/vibe_bg">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of balls"
+        android:textColor="@color/vibe_muted"
+        android:textSize="12sp" />
+    <EditText
+        android:id="@+id/et_n_balls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textColor="@color/vibe_text"
+        android:hint="e.g. 9" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pitch diameter (mm)"
+        android:textColor="@color/vibe_muted"
+        android:textSize="12sp"
+        android:layout_marginTop="12dp" />
+    <EditText
+        android:id="@+id/et_pitch_dia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:textColor="@color/vibe_text"
+        android:hint="e.g. 39.0" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ball diameter (mm)"
+        android:textColor="@color/vibe_muted"
+        android:textSize="12sp"
+        android:layout_marginTop="12dp" />
+    <EditText
+        android:id="@+id/et_ball_dia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:textColor="@color/vibe_text"
+        android:hint="e.g. 7.9" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Contact angle (degrees)"
+        android:textColor="@color/vibe_muted"
+        android:textSize="12sp"
+        android:layout_marginTop="12dp" />
+    <EditText
+        android:id="@+id/et_contact_angle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:textColor="@color/vibe_text"
+        android:text="0.0" />
+
+    <TextView
+        android:id="@+id/tv_calc_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:padding="10dp"
+        android:background="@color/vibe_s2"
+        android:textColor="@color/vibe_green"
+        android:textSize="13sp"
+        android:fontFamily="monospace"
+        android:text="Factors will appear here" />
+
+</LinearLayout>

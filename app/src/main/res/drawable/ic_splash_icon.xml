@@ -1,0 +1,26 @@
+<!-- app/src/main/res/drawable/ic_splash_icon.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Background circle -->
+    <path
+        android:fillColor="@color/vibe_green"
+        android:pathData="M54,54m-50,0a50,50 0,1,1 100,0a50,50 0,1,1 -100,0" />
+
+    <!-- Waveform bars -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40,45h5v18h-5z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M48,38h5v32h-5z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M56,33h5v42h-5z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M64,40h5v28h-5z" />
+</vector>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vibe_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:padding="11dp" android:background="@color/vibe_s2" android:layout_marginEnd="5dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Fleet Health" android:textColor="@color/vibe_muted" android:textSize="10sp" android:fontFamily="monospace" android:textAllCaps="true"/>
+                <TextView android:id="@+id/kpi_fleet_health" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="@color/vibe_amber" android:textSize="22sp" android:fontFamily="monospace" android:textStyle="bold"/>
+                <TextView android:id="@+id/kpi_fleet_health_sub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="avg · 0 assets" android:textColor="@color/vibe_muted" android:textSize="10sp"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:padding="11dp" android:background="@color/vibe_s2" android:layout_marginEnd="5dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Active Alerts" android:textColor="@color/vibe_muted" android:textSize="10sp" android:fontFamily="monospace" android:textAllCaps="true"/>
+                <TextView android:id="@+id/kpi_active_alerts" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="@color/vibe_red" android:textSize="22sp" android:fontFamily="monospace" android:textStyle="bold"/>
+                <TextView android:id="@+id/kpi_active_alerts_sub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="0 crit · 0 warn" android:textColor="@color/vibe_muted" android:textSize="10sp"/>
+            </LinearLayout>
+            <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical" android:padding="11dp" android:background="@color/vibe_s2">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Nodes Online" android:textColor="@color/vibe_muted" android:textSize="10sp" android:fontFamily="monospace" android:textAllCaps="true"/>
+                <TextView android:id="@+id/kpi_nodes_online" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="--" android:textColor="@color/vibe_green" android:textSize="22sp" android:fontFamily="monospace" android:textStyle="bold"/>
+                <TextView android:id="@+id/kpi_nodes_online_sub" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="connecting..." android:textColor="@color/vibe_muted" android:textSize="10sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ASSETS"
+                android:textColor="@color/vibe_muted"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.05"/>
+            <TextView
+                android:id="@+id/btnAddAsset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+ Add asset"
+                android:textColor="@color/vibe_blue"
+                android:textSize="10sp"
+                android:fontFamily="monospace"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/historyAssetsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/historyAssetEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No assets found."
+            android:textColor="@color/vibe_muted"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:padding="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="12dp"
+            android:gravity="center_vertical">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="ACTIVE ALERTS"
+                android:textColor="@color/vibe_muted"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.05"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/historyAlertsContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/historyAlertEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No active alerts."
+            android:textColor="@color/vibe_muted"
+            android:fontFamily="monospace"
+            android:textSize="12sp"
+            android:visibility="gone"
+            android:padding="12dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

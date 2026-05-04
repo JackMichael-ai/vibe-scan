@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vibe_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <!-- 1. MACHINE CONFIGURATION -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MACHINE CONFIGURATION"
+            android:textColor="@color/vibe_muted"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Vibe.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Machine Class -->
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Machine class" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold"/>
+                <Spinner android:id="@+id/sp_machine_class" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" />
+
+                <!-- Shaft RPM -->
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Shaft RPM" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                    <SeekBar android:id="@+id/sb_shaft_rpm" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                    <TextView android:id="@+id/tv_shaft_rpm_val" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1500 RPM" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                </LinearLayout>
+                <EditText android:id="@+id/et_shaft_rpm" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="number" android:textColor="@color/vibe_text" android:textSize="12sp" android:layout_marginBottom="12dp" />
+
+                <!-- Bearing Preset -->
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Bearing Preset" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold"/>
+                <Spinner android:id="@+id/sp_bearing_preset" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" />
+
+                <!-- Custom Factors -->
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BPFO" android:textColor="@color/vibe_muted" android:textSize="10sp" />
+                        <EditText android:id="@+id/et_bpfo_factor" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="numberDecimal" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                    </LinearLayout>
+                    <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:orientation="vertical">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="BPFI" android:textColor="@color/vibe_muted" android:textSize="10sp" />
+                        <EditText android:id="@+id/et_bpfi_factor" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="numberDecimal" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                    </LinearLayout>
+                </LinearLayout>
+                <Button android:id="@+id/btn_apply_factors" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="APPLY FACTORS" android:textSize="10sp" />
+                <TextView android:id="@+id/tv_bpfo_help" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_muted" android:textSize="9sp" />
+                <TextView android:id="@+id/tv_bpfi_help" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_muted" android:textSize="9sp" />
+                <Button android:id="@+id/btn_calc_bearing" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="BEARING CALCULATOR" android:textSize="10sp" android:layout_marginBottom="12dp" />
+
+                <!-- Frequency Search -->
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Frequency Search (Hz)" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <EditText android:id="@+id/et_min_search_hz" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Min" android:inputType="numberDecimal" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                    <EditText android:id="@+id/et_max_search_hz" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Max" android:inputType="numberDecimal" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                </LinearLayout>
+                <Switch android:id="@+id/sw_focus_shaft" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Focus on shaft" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                <Button android:id="@+id/btn_apply_freq" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="APPLY FREQ" android:textSize="10sp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 2. SIGNAL PROCESSING -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SIGNAL PROCESSING"
+            android:textColor="@color/vibe_muted"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Vibe.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Powerline Notch" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold"/>
+                <Spinner android:id="@+id/sp_powerline" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginBottom="12dp" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Analysis Interval" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold"/>
+                <Spinner android:id="@+id/sp_analysis_interval" android:layout_width="match_parent" android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 3. BATTERY GUARDIAN -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BATTERY GUARDIAN"
+            android:textColor="@color/vibe_muted"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Vibe.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Upper Threshold" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                    <SeekBar android:id="@+id/sb_batt_upper" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                    <TextView android:id="@+id/tv_batt_upper_val" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="70%" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Lower Threshold" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="8dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical">
+                    <SeekBar android:id="@+id/sb_batt_lower" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" />
+                    <TextView android:id="@+id/tv_batt_lower_val" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="30%" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Temp Thresholds (°C)" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="8dp"/>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+                    <EditText android:id="@+id/et_batt_warn_temp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Warn" android:inputType="number" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                    <EditText android:id="@+id/et_batt_crit_temp" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:hint="Crit" android:inputType="number" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                </LinearLayout>
+                <Button android:id="@+id/btn_apply_temps" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="APPLY TEMPS" android:textSize="10sp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 4. CONNECTIVITY -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONNECTIVITY"
+            android:textColor="@color/vibe_muted"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Vibe.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <Switch android:id="@+id/sw_background_monitoring" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="Background Monitoring" android:textColor="@color/vibe_text" android:textSize="12sp" />
+
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="API Endpoint" android:textColor="@color/vibe_text" android:textSize="12sp" android:textStyle="bold" android:layout_marginTop="8dp"/>
+                <EditText android:id="@+id/et_api_endpoint" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="textUri" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                <Button android:id="@+id/btn_save_endpoint" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="SAVE ENDPOINT" android:textSize="10sp" />
+
+                <Button android:id="@+id/btn_reset_baseline" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="RESET BASELINE" android:textSize="10sp" android:layout_marginTop="8dp"/>
+                <TextView android:id="@+id/tv_sync_status" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_muted" android:textSize="10sp" android:layout_marginTop="4dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 5. ENGINE DIAGNOSTICS -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ENGINE DIAGNOSTICS"
+            android:textColor="@color/vibe_muted"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Vibe.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView android:id="@+id/diag_engine" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_window" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_resolution" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_axes" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_interp" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_fixes" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_thread" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_rate" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_gate" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_baseline" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_harmonic" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="11sp" />
+
+                <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/vibe_border" android:layout_marginVertical="8dp" />
+
+                <TextView android:id="@+id/diag_live_rate" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_blue" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_live_conf" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_green" android:textSize="11sp" />
+                <TextView android:id="@+id/diag_live_baseline" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_amber" android:textSize="11sp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- 6. ACCOUNT -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ACCOUNT"
+            android:textColor="@color/vibe_muted"
+            android:textSize="10sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            android:letterSpacing="0.05"
+            android:layout_marginBottom="12dp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.Vibe.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView android:id="@+id/tv_account_email" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_text" android:textSize="12sp" />
+                <TextView android:id="@+id/tv_node_id" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_muted" android:textSize="10sp" />
+                <TextView android:id="@+id/tv_org_id" android:layout_width="match_parent" android:layout_height="wrap_content" android:textColor="@color/vibe_muted" android:textSize="10sp" />
+
+                <Button android:id="@+id/btn_sign_out" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="SIGN OUT" android:backgroundTint="@color/vibe_red" android:layout_marginTop="12dp" />
+                <Button android:id="@+id/btn_factory_reset" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="FACTORY RESET" android:backgroundTint="@color/vibe_hint" android:layout_marginTop="8dp" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <View android:layout_width="match_parent" android:layout_height="80dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

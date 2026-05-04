@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/vibe_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="18dp">
+
+        <!-- Top Status Pills Row -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+            android:layout_marginBottom="12dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView android:id="@+id/pl_conf" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/Widget.Vibe.Pill" android:text="Confidence: —" android:layout_marginEnd="6dp"/>
+                <TextView android:id="@+id/pl_rate" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/Widget.Vibe.Pill" android:text="Rate: —" android:layout_marginEnd="6dp"/>
+                <TextView android:id="@+id/pl_hz" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/Widget.Vibe.Pill" android:text="Peak Hz: —" android:layout_marginEnd="6dp"/>
+                <TextView android:id="@+id/pl_iso2" android:layout_width="wrap_content" android:layout_height="wrap_content" style="@style/Widget.Vibe.Pill" android:text="ISO Zone —" android:layout_marginEnd="6dp"/>
+                <com.northmark.vibescan.ui.components.BatteryIndicator
+                    android:id="@+id/batteryIndicator"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- Ring and Main Health -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp">
+
+                <com.northmark.vibescan.ui.components.HealthRingView
+                    android:id="@+id/healthRing"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="@id/healthRing"
+                    app:layout_constraintLeft_toLeftOf="@id/healthRing"
+                    app:layout_constraintRight_toRightOf="@id/healthRing"
+                    app:layout_constraintTop_toTopOf="@id/healthRing">
+
+                    <TextView
+                        android:id="@+id/h_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="—"
+                        android:textColor="@color/vibe_text"
+                        android:textSize="44sp"
+                        android:fontFamily="monospace"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="HEALTH"
+                        android:textColor="@color/vibe_muted"
+                        android:letterSpacing="0.15"
+                        android:textSize="8sp"
+                        android:fontFamily="monospace" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Learning Baseline Progress -->
+            <LinearLayout
+                android:id="@+id/baselineGroup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:layout_marginBottom="10dp"
+                android:background="@color/vibe_s2"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/baselineLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Learning baseline…"
+                    android:textColor="@color/vibe_text"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:fontFamily="monospace"
+                    android:layout_marginBottom="8dp"/>
+                <ProgressBar
+                    android:id="@+id/baselineProgress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="4dp"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/bar_progress_blue" />
+            </LinearLayout>
+
+            <!-- ISO Zone Badge -->
+            <com.northmark.vibescan.ui.components.ISOZoneBadge
+                android:id="@+id/isoBadge"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_marginBottom="10dp" />
+
+            <!-- 5 Calibrated Metrics -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="horizontal"
+                android:layout_marginBottom="10dp">
+
+                <com.northmark.vibescan.ui.components.MetricCardView
+                    android:id="@+id/mc_vel"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp" />
+
+                <com.northmark.vibescan.ui.components.MetricCardView
+                    android:id="@+id/mc_acc"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp" />
+
+                <com.northmark.vibescan.ui.components.MetricCardView
+                    android:id="@+id/mc_kurt"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp" />
+
+                <com.northmark.vibescan.ui.components.MetricCardView
+                    android:id="@+id/mc_crest"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="4dp" />
+
+                <com.northmark.vibescan.ui.components.MetricCardView
+                    android:id="@+id/mc_hz"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+            <!-- Bars -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="7dp">
+                    <TextView android:layout_width="115dp" android:layout_height="wrap_content" android:text="Signal confidence" android:textColor="@color/vibe_muted" android:textSize="10sp" android:fontFamily="monospace"/>
+                    <ProgressBar android:id="@+id/pb_conf" style="?android:attr/progressBarStyleHorizontal" android:layout_width="0dp" android:layout_height="4dp" android:layout_weight="1" android:progress="0" android:progressDrawable="@drawable/bar_progress_green" />
+                    <TextView android:id="@+id/bv_conf" android:layout_width="38dp" android:layout_height="wrap_content" android:text="0%" android:textColor="@color/vibe_muted" android:textSize="10sp" android:fontFamily="monospace" android:gravity="end"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="7dp">
+                    <TextView android:layout_width="115dp" android:layout_height="wrap_content" android:text="Actual sample rate" android:textColor="@color/vibe_muted" android:textSize="10sp" android:fontFamily="monospace"/>
+                    <ProgressBar android:id="@+id/pb_rate" style="?android:attr/progressBarStyleHorizontal" android:layout_width="0dp" android:layout_height="4dp" android:layout_weight="1" android:progress="0" android:progressDrawable="@drawable/bar_progress_blue" />
+                    <TextView android:id="@+id/bv_rate" android:layout_width="38dp" android:layout_height="wrap_content" android:text="—" android:textColor="@color/vibe_blue" android:textSize="10sp" android:fontFamily="monospace" android:gravity="end"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical">
+                    <TextView android:layout_width="115dp" android:layout_height="wrap_content" android:text="BPFO band energy" android:textColor="@color/vibe_muted" android:textSize="10sp" android:fontFamily="monospace"/>
+                    <ProgressBar android:id="@+id/pb_bpfo" style="?android:attr/progressBarStyleHorizontal" android:layout_width="0dp" android:layout_height="4dp" android:layout_weight="1" android:progress="0" android:progressDrawable="@drawable/bar_progress_coral" />
+                    <TextView android:id="@+id/bv_bpfo" android:layout_width="38dp" android:layout_height="wrap_content" android:text="—" android:textColor="@color/vibe_coral" android:textSize="10sp" android:fontFamily="monospace" android:gravity="end"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FFT SPECTRUM · MM/S VELOCITY · BINS &lt;2HZ HIDDEN"
+                android:textColor="@color/vibe_hint"
+                android:textSize="9sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="monospace"/>
+
+            <com.northmark.vibescan.ui.components.SpectrumView
+                android:id="@+id/spectrumView"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginBottom="16dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HEALTH TREND · LAST 60 READINGS"
+                android:textColor="@color/vibe_hint"
+                android:textSize="9sp"
+                android:letterSpacing="0.1"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="monospace"/>
+
+            <!-- Real Health Trend View -->
+            <com.northmark.vibescan.ui.components.HealthTrendView
+                android:id="@+id/trendView"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/vibe_s2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="8dp">
+                    <TextView android:layout_width="85dp" android:layout_height="wrap_content" android:text="Shaft RPM" android:textColor="@color/vibe_muted" android:textSize="10sp" android:fontFamily="monospace"/>
+                    <com.google.android.material.slider.Slider
+                        android:id="@+id/rpmSlider"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:valueFrom="300"
+                        android:valueTo="6000"
+                        android:stepSize="50"
+                        android:value="1500"
+                        app:thumbColor="@color/vibe_green"
+                        app:trackColorInactive="@color/vibe_s3"
+                        app:trackColorActive="@color/vibe_green" />
+                    <TextView android:id="@+id/rpmLabel" android:layout_width="60dp" android:layout_height="wrap_content" android:text="1500 RPM" android:textColor="@color/vibe_text" android:textSize="10sp" android:fontFamily="monospace" android:gravity="end"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btnReset"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="RESET BASELINE"
+                    android:backgroundTint="@color/vibe_hint"
+                    android:textColor="@color/vibe_text"
+                    android:textSize="12sp"
+                    android:fontFamily="monospace" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

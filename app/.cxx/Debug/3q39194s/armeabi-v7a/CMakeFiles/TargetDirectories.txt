@@ -1,0 +1,4 @@
+C:/Users/user/Downloads/vibescan_source/app/.cxx/Debug/3q39194s/armeabi-v7a/CMakeFiles/kissfft.dir
+C:/Users/user/Downloads/vibescan_source/app/.cxx/Debug/3q39194s/armeabi-v7a/CMakeFiles/vibescan_engine.dir
+C:/Users/user/Downloads/vibescan_source/app/.cxx/Debug/3q39194s/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/user/Downloads/vibescan_source/app/.cxx/Debug/3q39194s/armeabi-v7a/CMakeFiles/rebuild_cache.dir

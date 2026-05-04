@@ -1,0 +1,46 @@
+<!-- app/src/main/res/values/colors.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Minimalist White Theme -->
+    <color name="background">#FFFFFF</color>
+    <color name="surface">#F8F9FA</color>
+    <color name="surface_elevated">#FFFFFF</color>
+
+    <!-- Primary Accent - Clean Teal -->
+    <color name="accent_teal">#00BFA5</color>
+    <color name="accent_teal_light">#64FFDA</color>
+    <color name="accent_teal_dark">#00897B</color>
+
+    <!-- Text Colors -->
+    <color name="text_primary">#212121</color>
+    <color name="text_secondary">#757575</color>
+    <color name="text_tertiary">#BDBDBD</color>
+    <color name="text_on_accent">#FFFFFF</color>
+
+    <!-- Status Colors -->
+    <color name="vibe_green">#00C853</color>
+    <color name="vibe_amber">#FFB300</color>
+    <color name="vibe_coral">#FF6E40</color>
+    <color name="vibe_red">#FF1744</color>
+    <color name="vibe_purple">#7C4DFF</color>
+    <color name="vibe_blue">#2979FF</color>
+
+    <!-- Status Colors - Alpha Variants -->
+    <color name="vibe_green_alpha">#1A00C853</color>
+    <color name="vibe_amber_alpha">#1AFFB300</color>
+    <color name="vibe_coral_alpha">#1AFF6E40</color>
+    <color name="vibe_red_alpha">#1AFF1744</color>
+
+    <!-- Neutral Grays -->
+    <color name="vibe_border">#E0E0E0</color>
+    <color name="vibe_divider">#EEEEEE</color>
+    <color name="vibe_muted">#9E9E9E</color>
+
+    <!-- Legacy (for compatibility) -->
+    <color name="vibe_bg">#FFFFFF</color>
+    <color name="vibe_s1">#F8F9FA</color>
+    <color name="vibe_s2">#ECEFF1</color>
+    <color name="vibe_text">#212121</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources>

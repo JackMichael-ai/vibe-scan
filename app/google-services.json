@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "442854208028",
+    "project_id": "vibescan-app",
+    "storage_bucket": "vibescan-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442854208028:android:4d2e9010facb267b2b25d9",
+        "android_client_info": {
+          "package_name": "com.northmark.vibescan"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBd3c7s3PDL5lUo8GhqZ7hq5Pffv97aa8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

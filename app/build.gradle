@@ -1,0 +1,137 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services' version '4.4.4'
+}
+
+android {
+    namespace         'com.northmark.vibescan'
+    compileSdk        34
+    ndkVersion        "30.0.14904198"
+
+    defaultConfig {
+        applicationId         "com.northmark.vibescan"
+        minSdk                23       // Android 6.0 Marshmallow (2015+)
+        targetSdk             34
+        versionCode           1
+        versionName           "1.0.0"
+
+        multiDexEnabled true
+
+        // ABI filters — arm64-v8a for modern phones, armeabi-v7a for 2012-2017 phones
+        // x86/x86_64 for emulators
+        ndk {
+            abiFilters "arm64-v8a", "armeabi-v7a", "x86", "x86_64"
+        }
+
+        externalNativeBuild {
+            cmake {
+                cppFlags "-std=c++17"
+                arguments "-DANDROID_STL=c++_shared",
+                          "-DANDROID_PLATFORM=android-16"
+            }
+        }
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    externalNativeBuild {
+        cmake {
+            path         "src/main/cpp/CMakeLists.txt"
+            version      "3.22.1"
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable          true
+            minifyEnabled       false
+        }
+        release {
+            minifyEnabled       true
+            shrinkResources     true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                          'proguard-rules.pro'
+            // Signing config goes here for Play Store
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+        compose true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.15'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    // AndroidX — use versions compatible with API 16
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.core:core-ktx:1.12.0'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
+    implementation 'androidx.fragment:fragment-ktx:1.6.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // Compose
+    implementation platform('androidx.compose:compose-bom:2023.08.00')
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-graphics'
+    implementation 'androidx.compose.ui:ui-tooling-preview'
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.compose.material:material-icons-extended'
+
+    // Material Design — for bottom navigation, cards, sliders
+    implementation 'com.google.android.material:material:1.11.0'
+
+    // Charts
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // Navigation component
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.7.6'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.7.6'
+
+    // Coroutines (StateFlow for UI updates)
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+    // Lifecycle (for viewLifecycleOwner.lifecycleScope)
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.7.0'
+
+    // WorkManager — background monitoring service (API 14+)
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
+
+    // Firebase
+    implementation platform('com.google.firebase:firebase-bom:32.7.2')
+    implementation 'com.google.firebase:firebase-database-ktx'
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Testing
+    testImplementation         'junit:junit:4.13.2'
+    androidTestImplementation  'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation  'androidx.test.espresso:espresso-core:3.5.1'
+
+    // Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:32.7.4')
+
+    // Firebase Authentication
+    implementation 'com.google.firebase:firebase-auth-ktx'
+
+    // Firebase Firestore (for user profiles)
+    implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    // Firebase Analytics (optional)
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+    // Google Play Services Auth (for Google Sign-In, optional)
+    implementation 'com.google.android.gms:play-services-auth:21.0.0'
+}

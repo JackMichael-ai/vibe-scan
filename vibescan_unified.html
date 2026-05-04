@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VibeScan — Northmark Intelligence</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+:root{
+  --bg:#07080a;--s1:#0e1013;--s2:#141820;--s3:#1a1f28;--s4:#21262f;
+  --border:#1e2430;--border2:#2a3040;
+  --text:#dedad0;--muted:#666c78;--hint:#35404d;
+  --green:#1D9E75;--amber:#BA7517;--coral:#D85A30;--red:#E24B4A;
+  --purple:#7F77DD;--blue:#378ADD;
+  --mono:'JetBrains Mono',monospace;--sans:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:var(--sans)}
+
+/* ── AUTH ── */
+.auth-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.auth-card{width:100%;max-width:420px;background:var(--s1);border:1px solid var(--border);border-radius:20px;padding:36px 32px}
+.auth-brand{font-size:24px;font-weight:600;letter-spacing:-.5px}
+.auth-brand em{color:var(--green);font-style:normal}
+.auth-tagline{font-size:12px;color:var(--muted);font-family:var(--mono);margin-top:4px;margin-bottom:28px}
+.auth-tabs{display:flex;background:var(--s2);border-radius:10px;padding:3px;margin-bottom:22px;gap:3px}
+.auth-tab{flex:1;padding:8px;font-size:12px;font-family:var(--mono);color:var(--muted);background:none;border:none;border-radius:8px;cursor:pointer;transition:all .15s;text-align:center}
+.auth-tab.on{background:var(--s4);color:var(--text);font-weight:500}
+.field{margin-bottom:14px}
+.field label{font-size:11px;color:var(--muted);font-family:var(--mono);display:block;margin-bottom:5px;letter-spacing:.3px}
+.field input,.field select{width:100%;background:var(--s3);border:1px solid var(--border2);border-radius:9px;padding:10px 13px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:border-color .15s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--green)}
+.field select{cursor:pointer}
+.field-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.btn{width:100%;padding:11px;background:var(--green);color:#fff;border:none;border-radius:9px;font-size:13px;font-weight:500;cursor:pointer;margin-top:6px;transition:opacity .15s;font-family:var(--sans)}
+.btn:hover{opacity:.88}
+.auth-err{font-size:11px;color:var(--red);font-family:var(--mono);text-align:center;margin-top:10px;min-height:14px}
+.auth-hint{font-size:11px;color:var(--hint);text-align:center;margin-top:14px;font-family:var(--mono)}
+
+/* ── APP SHELL ── */
+.app{display:none;height:100vh;grid-template-columns:52px 1fr;grid-template-rows:48px 1fr;overflow:hidden}
+.app.on{display:grid}
+
+/* Topbar */
+.topbar{grid-column:1/-1;background:var(--s1);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 18px 0 10px}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.tb-brand{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.tb-brand em{color:var(--green);font-style:normal}
+.tb-right{display:flex;align-items:center;gap:16px}
+.tb-pill{font-size:10px;font-family:var(--mono);color:var(--muted);background:var(--s3);padding:3px 9px;border-radius:20px;border:1px solid var(--border)}
+.tb-user{font-size:11px;font-family:var(--mono);color:var(--muted);cursor:pointer;transition:color .15s}
+.tb-user:hover{color:var(--text)}
+
+/* Sidebar */
+.sidebar{background:var(--s1);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:10px 0;gap:2px}
+.sb-btn{width:38px;height:38px;border-radius:9px;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative;transition:background .15s}
+.sb-btn svg{width:17px;height:17px;stroke:var(--muted);stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:stroke .15s}
+.sb-btn:hover{background:var(--s3)}
+.sb-btn:hover svg{stroke:var(--text)}
+.sb-btn.on{background:var(--s3)}
+.sb-btn.on svg{stroke:var(--green)}
+.sb-badge{position:absolute;top:3px;right:3px;width:13px;height:13px;border-radius:50%;background:var(--red);font-size:8px;font-family:var(--mono);font-weight:700;color:#fff;display:flex;align-items:center;justify-content:center}
+.sb-sep{width:26px;height:1px;background:var(--border);margin:6px 0}
+
+/* Main */
+.main{overflow-y:auto;background:var(--bg);padding:18px 20px}
+
+/* Panels */
+.pnl{display:none}.pnl.on{display:block}
+
+/* Grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+
+/* Cards */
+.card{background:var(--s1);border:1px solid var(--border);border-radius:12px;padding:15px}
+.card-accent{border-left:3px solid}
+.kpi{background:var(--s2);border-radius:9px;padding:11px 13px}
+.kpi-l{font-size:10px;color:var(--muted);font-family:var(--mono);margin-bottom:3px;letter-spacing:.3px;text-transform:uppercase}
+.kpi-v{font-size:22px;font-weight:600;font-family:var(--mono);line-height:1}
+.kpi-s{font-size:10px;color:var(--muted);margin-top:3px}
+h3{font-size:13px;font-weight:500;margin-bottom:7px;color:var(--text)}
+p{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:8px}
+.tag{font-size:10px;background:var(--s3);color:var(--muted);padding:2px 7px;border-radius:20px;display:inline-block;margin:2px 2px 0 0;font-family:var(--mono)}
+.sep{border:none;border-top:1px solid var(--border);margin:11px 0}
+.sec{font-size:9px;color:var(--hint);letter-spacing:1px;text-transform:uppercase;font-family:var(--mono);margin-bottom:5px}
+.row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border)}
+.row:last-child{border:none}
+
+/* ── SCAN panel ── */
+.scan-layout{display:grid;grid-template-columns:180px 1fr;gap:16px;align-items:start}
+
+/* Ring */
+.ring-wrap{position:relative;width:160px;height:160px;margin:0 auto 10px}
+#ring-svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring-cx{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.h-num{font-size:44px;font-weight:700;font-family:var(--mono);line-height:1;transition:color .5s}
+.h-lbl{font-size:8px;color:var(--muted);letter-spacing:1.5px;font-family:var(--mono);margin-top:1px}
+
+/* ISO banner */
+.iso-banner{padding:10px 13px;border-radius:9px;border-left:3px solid;margin-bottom:10px;transition:border-color .4s,background .4s}
+.iso-a{background:#1D9E7510;border-color:var(--green)}
+.iso-b{background:#BA751710;border-color:var(--amber)}
+.iso-c{background:#D85A3010;border-color:var(--coral)}
+.iso-d{background:#E24B4A18;border-color:var(--red)}
+.iso-title{font-size:12px;font-weight:500;margin-bottom:2px}
+.iso-sub{font-size:11px;color:var(--muted)}
+
+/* Metrics */
+.met5{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:10px}
+.mc{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px 6px;text-align:center}
+.mv{font-size:13px;font-weight:600;font-family:var(--mono);transition:color .3s}
+.mk{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.mu{font-size:8px;color:var(--hint);font-family:var(--mono);margin-top:1px}
+
+/* Bars */
+.bar-row{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.bar-lbl{font-size:10px;font-family:var(--mono);color:var(--muted);min-width:115px}
+.bar-track{flex:1;height:4px;background:var(--s3);border-radius:2px}
+.bar-fill{height:4px;border-radius:2px;transition:width .5s,background .4s}
+.bar-val{font-size:10px;font-family:var(--mono);min-width:38px;text-align:right}
+
+/* Sim */
+.sim-row{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.sim-btn{padding:5px 11px;border-radius:7px;font-size:10px;font-family:var(--mono);border:1px solid var(--border);background:none;color:var(--muted);cursor:pointer;transition:all .15s}
+.sim-btn.on{border-color:currentColor}
+.sim-btn[data-s=still].on{color:var(--green)}
+.sim-btn[data-s=worn].on{color:var(--amber)}
+.sim-btn[data-s=imbalance].on{color:var(--coral)}
+.sim-btn[data-s=critical].on{color:var(--red)}
+.sim-btn[data-s=noise].on{color:var(--purple)}
+
+/* Ctrl */
+.ctrl{display:flex;align-items:center;gap:9px;margin-bottom:7px}
+.ctrl-lbl{font-size:10px;color:var(--muted);font-family:var(--mono);min-width:85px}
+input[type=range]{flex:1;-webkit-appearance:none;height:3px;background:var(--s3);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--green);cursor:pointer}
+select.sel{flex:1;background:var(--s3);border:1px solid var(--border2);border-radius:7px;padding:5px 9px;color:var(--text);font-size:10px;font-family:var(--mono);outline:none;cursor:pointer}
+.ctrl-val{font-size:10px;font-family:var(--mono);color:var(--text);min-width:54px;text-align:right}
+
+/* Canvas */
+canvas{display:block;width:100%;border-radius:8px;background:var(--s2);border:1px solid var(--border)}
+
+/* Status pills */
+.pill-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.pill{font-size:9px;font-family:var(--mono);padding:3px 9px;border-radius:20px;border:1px solid var(--border);color:var(--muted)}
+.pill.ok{border-color:#1D9E7544;color:var(--green)}
+.pill.warn{border-color:#BA751744;color:var(--amber)}
+.pill.err{border-color:#E24B4A44;color:var(--red)}
+
+/* Fleet cards */
+.fleet-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:20px}
+.fc{background:var(--s1);border:1px solid var(--border);border-radius:11px;padding:13px 14px;cursor:pointer;transition:border-color .2s}
+.fc:hover{border-color:var(--border2)}
+.fc.crit{border-left:3px solid var(--red)}
+.fc.warn{border-left:3px solid var(--coral)}
+.fc.mon{border-left:3px solid var(--amber)}
+.fc.ok{border-left:3px solid var(--green)}
+.fc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.fc-name{font-size:13px;font-weight:500}
+.fc-type{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:1px}
+.fc-h{font-size:20px;font-weight:700;font-family:var(--mono)}
+.fc-meta{margin-bottom:8px;display:flex;gap:5px;flex-wrap:wrap}
+.fc-mets{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.fm{background:var(--s2);border-radius:6px;padding:5px;text-align:center}
+.fm-v{font-size:12px;font-weight:500;font-family:var(--mono)}
+.fm-k{font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.mini-bar{height:2px;background:var(--s3);border-radius:1px;margin-top:7px}
+.mini-fill{height:2px;border-radius:1px;transition:width .5s}
+.nd-row{display:flex;align-items:center;gap:4px;margin-top:6px}
+.nd-dot{width:5px;height:5px;border-radius:50%}
+.nd-txt{font-size:9px;color:var(--muted);font-family:var(--mono)}
+
+/* Alerts */
+.al-list{display:flex;flex-direction:column;gap:7px}
+.al{display:flex;align-items:flex-start;gap:11px;background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:11px 13px;transition:opacity .4s}
+.al.crit{border-left:3px solid var(--red)}
+.al.warn{border-left:3px solid var(--coral)}
+.al.mon{border-left:3px solid var(--amber)}
+.al-sev{font-size:9px;font-weight:600;font-family:var(--mono);min-width:52px;padding-top:2px}
+.al-body{flex:1}
+.al-asset{font-size:12px;font-weight:500}
+.al-txt{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4}
+.al-time{font-size:9px;color:var(--hint);white-space:nowrap;font-family:var(--mono)}
+.res{font-size:10px;font-family:var(--mono);color:var(--muted);background:var(--s3);border:1px solid var(--border);border-radius:6px;padding:3px 9px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.res:hover{color:var(--green);border-color:var(--green)}
+
+/* Nodes */
+.node-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.nc{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:12px 13px}
+.nc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.nc-name{font-size:12px;font-weight:500}
+.nc-badge{font-size:9px;font-family:var(--mono);padding:2px 7px;border-radius:20px}
+.nc-badge.on{background:#1D9E7520;color:var(--green)}
+.nc-badge.off{background:#E24B4A20;color:var(--red)}
+.nc-rows{font-size:10px;color:var(--muted)}
+.nc-r{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid var(--border)}
+.nc-r:last-child{border:none}
+.nc-rv{font-family:var(--mono);color:var(--text)}
+
+/* ISO table */
+.iso-t{width:100%;font-size:11px;border-collapse:collapse}
+.iso-t th{text-align:left;padding:7px 10px;font-weight:500;font-family:var(--mono);font-size:10px;color:var(--muted);border-bottom:1px solid var(--border)}
+.iso-t td{padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono)}
+.iso-t tr:last-child td{border:none}
+.za{color:var(--green)}.zb{color:var(--amber)}.zc{color:var(--coral)}.zd{color:var(--red)}
+.zh{font-weight:500;color:var(--text)}
+
+/* Settings */
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)}
+.set-row:last-child{border:none}
+.set-lbl{font-size:12px;font-weight:500}
+.set-desc{font-size:11px;color:var(--muted);margin-top:2px}
+
+/* Section title row */
+.sec-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sec-title{font-size:10px;font-weight:500;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;font-family:var(--mono)}
+.sec-action{font-size:10px;color:var(--blue);cursor:pointer;font-family:var(--mono)}
+</style>
+</head>
+<body>
+
+<!-- ══ AUTH ══════════════════════════════════════════════════════════════════ -->
+<div class="auth-shell" id="auth">
+  <div class="auth-card">
+    <div class="auth-brand">Vibe<em>Scan</em></div>
+    <div class="auth-tagline">Industrial Machine Intelligence · Northmark</div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab on" onclick="authTab('login',this)">Sign in</button>
+      <button class="auth-tab" onclick="authTab('register',this)">Register org</button>
+    </div>
+
+    <div id="pane-login">
+      <div class="field"><label>Email</label><input id="le" type="email" value="demo@northmark.io"></div>
+      <div class="field"><label>Password</label><input id="lp" type="password" value="demo1234"></div>
+      <button class="btn" onclick="doLogin()">Sign in →</button>
+      <div class="auth-err" id="lerr"></div>
+      <div class="auth-hint">demo@northmark.io · demo1234</div>
+    </div>
+
+    <div id="pane-register" style="display:none">
+      <div class="field-2">
+        <div class="field"><label>First name</label><input id="rfn" type="text" placeholder="Jane"></div>
+        <div class="field"><label>Last name</label><input id="rln" type="text" placeholder="Doe"></div>
+      </div>
+      <div class="field"><label>Work email</label><input id="re" type="email" placeholder="jane@company.com"></div>
+      <div class="field"><label>Organisation</label><input id="ro" type="text" placeholder="Acme Industries Ltd"></div>
+      <div class="field-2">
+        <div class="field"><label>Country</label>
+          <select id="rc"><option>Kenya</option><option>Nigeria</option><option>South Africa</option><option>United Kingdom</option><option>Germany</option><option>India</option><option>Brazil</option><option>United States</option><option>Other</option></select>
+        </div>
+        <div class="field"><label>Plan</label>
+          <select id="rpl"><option>Starter</option><option>Professional</option><option>Enterprise</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Password (min 8 chars)</label><input id="rp" type="password" placeholder="••••••••"></div>
+      <button class="btn" onclick="doRegister()">Create account →</button>
+      <div class="auth-err" id="rerr"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ APP ═══════════════════════════════════════════════════════════════════ -->
+<div class="app" id="app">
+
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-dot" id="live-dot"></div>
+      <div class="tb-brand">Vibe<em>Scan</em></div>
+      <span class="tb-pill" id="tb-org">Northmark Intelligence</span>
+    </div>
+    <div class="tb-right">
+      <span class="tb-pill" id="tb-rate" style="color:var(--hint)">~200Hz</span>
+      <span class="tb-pill" id="tb-iso">ISO Zone A</span>
+      <span class="tb-user" id="tb-user" onclick="doLogout()">demo@northmark.io ↩</span>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <button class="sb-btn on" id="sb-scan" onclick="nav('scan',this)" title="Live scan">
+      <svg viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    </button>
+    <button class="sb-btn" id="sb-fleet" onclick="nav('fleet',this)" title="Fleet">
+      <svg viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+    </button>
+    <button class="sb-btn" id="sb-alerts" onclick="nav('alerts',this)" title="Alerts">
+      <svg viewBox="0 0 24 24"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      <span class="sb-badge" id="al-badge">2</span>
+    </button>
+    <div class="sb-sep"></div>
+    <button class="sb-btn" id="sb-nodes" onclick="nav('nodes',this)" title="Nodes">
+      <svg viewBox="0 0 24 24"><path d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+    </button>
+    <button class="sb-btn" id="sb-iso" onclick="nav('iso',this)" title="ISO 10816">
+      <svg viewBox="0 0 24 24"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+    </button>
+    <button class="sb-btn" id="sb-settings" onclick="nav('settings',this)" title="Settings">
+      <svg viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+    </button>
+  </div>
+
+  <!-- ══ MAIN ═══════════════════════════════════════════════════════════════ -->
+  <div class="main">
+
+    <!-- ── SCAN ── -->
+    <div class="pnl on" id="pnl-scan">
+
+      <div class="pill-row">
+        <span class="pill" id="pl-conf">Confidence: —</span>
+        <span class="pill" id="pl-rate">Rate: —</span>
+        <span class="pill" id="pl-hz">Peak Hz: —</span>
+        <span class="pill" id="pl-iso2">ISO Zone —</span>
+        <span class="pill ok">Battery: 67% · 34°C</span>
+        <span class="pill ok">Mount: excellent</span>
+        <span class="pill ok">Kiosk: pinned</span>
+      </div>
+
+      <div class="scan-layout">
+
+        <!-- Left: ring + controls -->
+        <div>
+          <div class="ring-wrap">
+            <svg id="ring-svg" viewBox="0 0 160 160">
+              <circle cx="80" cy="80" r="67" fill="none" stroke="#141820" stroke-width="12"/>
+              <circle id="ring-arc" cx="80" cy="80" r="67" fill="none"
+                stroke="#1D9E75" stroke-width="12" stroke-linecap="round"
+                stroke-dasharray="421" stroke-dashoffset="0"
+                style="transition:stroke-dashoffset .6s ease,stroke .4s"/>
+            </svg>
+            <div class="ring-cx">
+              <div class="h-num" id="h-num">—</div>
+              <div class="h-lbl">HEALTH</div>
+            </div>
+          </div>
+
+          <div class="sim-row">
+            <button class="sim-btn on" data-s="still"    onclick="simState('still',this)">Still</button>
+            <button class="sim-btn"    data-s="worn"     onclick="simState('worn',this)">Worn</button>
+            <button class="sim-btn"    data-s="imbalance"onclick="simState('imbalance',this)">Imbal.</button>
+            <button class="sim-btn"    data-s="critical" onclick="simState('critical',this)">Crit.</button>
+            <button class="sim-btn"    data-s="noise"    onclick="simState('noise',this)">Noise</button>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="ctrl">
+              <span class="ctrl-lbl">Machine class</span>
+              <select class="sel" id="mc-sel" onchange="setMC(this.value)">
+                <option value="0">Class 1 — &lt;15 kW</option>
+                <option value="1">Class 2 — 15–75 kW</option>
+                <option value="2">Class 3 — &gt;75kW rigid</option>
+                <option value="3">Class 4 — &gt;75kW flex</option>
+              </select>
+            </div>
+            <div class="ctrl">
+              <span class="ctrl-lbl">Shaft RPM</span>
+              <input type="range" id="rpm-sl" min="300" max="6000" step="50" value="1500" oninput="setRpm(this.value)">
+              <span class="ctrl-val" id="rpm-v">1500 RPM</span>
+            </div>
+            <div class="ctrl">
+              <span class="ctrl-lbl">Powerline Hz</span>
+              <select class="sel" id="pl-sel" onchange="setPl(this.value)">
+                <option value="50">50 Hz (Kenya / EU)</option>
+                <option value="60">60 Hz (US / JP)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: data -->
+        <div>
+          <!-- ISO zone banner -->
+          <div class="iso-banner iso-a" id="iso-banner">
+            <div class="iso-title" id="iso-ttl">ISO Zone A — Good</div>
+            <div class="iso-sub" id="iso-sub">Velocity within new-machine limits. Machine healthy.</div>
+          </div>
+
+          <!-- 5 calibrated metrics -->
+          <div class="met5">
+            <div class="mc"><div class="mv" id="mv-mms">0.00</div><div class="mk">RMS vel.</div><div class="mu">mm/s</div></div>
+            <div class="mc"><div class="mv" id="mv-ms2">0.000</div><div class="mk">RMS acc.</div><div class="mu">m/s²</div></div>
+            <div class="mc"><div class="mv" id="mv-k">3.0</div><div class="mk">Kurtosis</div><div class="mu">—</div></div>
+            <div class="mc"><div class="mv" id="mv-cr">1.0</div><div class="mk">Crest</div><div class="mu">pk/RMS</div></div>
+            <div class="mc"><div class="mv" id="mv-hz" style="color:var(--muted)">0.0</div><div class="mk">Peak Hz</div><div class="mu">≥2Hz only</div></div>
+          </div>
+
+          <!-- Confidence + rate bars -->
+          <div class="bar-row">
+            <span class="bar-lbl">Signal confidence</span>
+            <div class="bar-track"><div class="bar-fill" id="bf-conf" style="width:0%;background:var(--muted)"></div></div>
+            <span class="bar-val" id="bv-conf" style="color:var(--muted)">0%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-lbl">Actual sample rate</span>
+            <div class="bar-track"><div class="bar-fill" id="bf-rate" style="width:0%;background:var(--blue)"></div></div>
+            <span class="bar-val" id="bv-rate" style="color:var(--blue)">—</span>
+          </div>
+          <div class="bar-row" style="margin-bottom:10px">
+            <span class="bar-lbl">BPFO band energy</span>
+            <div class="bar-track"><div class="bar-fill" id="bf-bpfo" style="width:0%;background:var(--coral)"></div></div>
+            <span class="bar-val" id="bv-bpfo" style="color:var(--coral)">—</span>
+          </div>
+
+          <!-- Spectrum — mm/s, bins ≥2Hz shown -->
+          <div class="sec" style="margin-bottom:5px">FFT spectrum · mm/s velocity · bins &lt;2Hz hidden (ski-slope zone)</div>
+          <canvas id="spec-cv" height="88" style="margin-bottom:9px"></canvas>
+
+          <!-- Health trend -->
+          <div class="sec" style="margin-bottom:5px">Health trend · last 60 readings</div>
+          <canvas id="trend-cv" height="52"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── FLEET ── -->
+    <div class="pnl" id="pnl-fleet">
+      <div class="g4" style="margin-bottom:16px">
+        <div class="kpi"><div class="kpi-l">Fleet health</div><div class="kpi-v" style="color:var(--amber)">71</div><div class="kpi-s">avg · 5 assets</div></div>
+        <div class="kpi"><div class="kpi-l">Active alerts</div><div class="kpi-v" style="color:var(--red)">2</div><div class="kpi-s">1 critical · 1 warning</div></div>
+        <div class="kpi"><div class="kpi-l">Nodes online</div><div class="kpi-v" style="color:var(--green)">4/4</div><div class="kpi-s">all responding</div></div>
+        <div class="kpi"><div class="kpi-l">Outbox pending</div><div class="kpi-v" style="color:var(--muted)">0</div><div class="kpi-s">fully synced</div></div>
+      </div>
+      <div class="sec-row"><span class="sec-title">Assets</span><span class="sec-action">+ Add asset</span></div>
+      <div class="fleet-grid">
+        <div class="fc warn"><div class="fc-top"><div><div class="fc-name">Pump A3</div><div class="fc-type">Centrifugal pump · Plant B</div></div><div class="fc-h" style="color:var(--amber)">52</div></div><div class="fc-meta"><span class="tag">Class 1</span><span class="tag">1700 RPM</span><span class="tag">Node-01</span><span class="tag" style="color:var(--coral)">ISO Zone C</span></div><div class="fc-mets"><div class="fm"><div class="fm-v">4.7</div><div class="fm-k">mm/s</div></div><div class="fm"><div class="fm-v">6.1</div><div class="fm-k">Kurtosis</div></div><div class="fm"><div class="fm-v">4.8</div><div class="fm-k">Crest</div></div></div><div class="mini-bar"><div class="mini-fill" style="width:52%;background:var(--amber)"></div></div><div class="nd-row"><div class="nd-dot" style="background:var(--amber)"></div><span class="nd-txt">Bearing wear detected</span></div></div>
+        <div class="fc ok"><div class="fc-top"><div><div class="fc-name">Generator G1</div><div class="fc-type">Diesel generator · Plant A</div></div><div class="fc-h" style="color:var(--green)">91</div></div><div class="fc-meta"><span class="tag">Class 2</span><span class="tag">3000 RPM</span><span class="tag">Node-02</span><span class="tag" style="color:var(--green)">ISO Zone A</span></div><div class="fc-mets"><div class="fm"><div class="fm-v">1.1</div><div class="fm-k">mm/s</div></div><div class="fm"><div class="fm-v">2.7</div><div class="fm-k">Kurtosis</div></div><div class="fm"><div class="fm-v">1.9</div><div class="fm-k">Crest</div></div></div><div class="mini-bar"><div class="mini-fill" style="width:91%;background:var(--green)"></div></div><div class="nd-row"><div class="nd-dot" style="background:var(--green)"></div><span class="nd-txt">No fault detected</span></div></div>
+        <div class="fc mon"><div class="fc-top"><div><div class="fc-name">Conveyor M2</div><div class="fc-type">Belt conveyor · Warehouse</div></div><div class="fc-h" style="color:var(--amber)">78</div></div><div class="fc-meta"><span class="tag">Class 1</span><span class="tag">900 RPM</span><span class="tag">Node-03</span><span class="tag" style="color:var(--amber)">ISO Zone B</span></div><div class="fc-mets"><div class="fm"><div class="fm-v">2.8</div><div class="fm-k">mm/s</div></div><div class="fm"><div class="fm-v">3.8</div><div class="fm-k">Kurtosis</div></div><div class="fm"><div class="fm-v">2.6</div><div class="fm-k">Crest</div></div></div><div class="mini-bar"><div class="mini-fill" style="width:78%;background:var(--amber)"></div></div><div class="nd-row"><div class="nd-dot" style="background:var(--amber)"></div><span class="nd-txt">Monitor — elevated</span></div></div>
+        <div class="fc crit"><div class="fc-top"><div><div class="fc-name">HVAC Fan</div><div class="fc-type">Axial fan · Roof</div></div><div class="fc-h" style="color:var(--red)">14</div></div><div class="fc-meta"><span class="tag">Class 1</span><span class="tag">1200 RPM</span><span class="tag">Node-04</span><span class="tag" style="color:var(--red)">ISO Zone D</span></div><div class="fc-mets"><div class="fm"><div class="fm-v">13.1</div><div class="fm-k">mm/s</div></div><div class="fm"><div class="fm-v">9.2</div><div class="fm-k">Kurtosis</div></div><div class="fm"><div class="fm-v">8.7</div><div class="fm-k">Crest</div></div></div><div class="mini-bar"><div class="mini-fill" style="width:14%;background:var(--red)"></div></div><div class="nd-row"><div class="nd-dot" style="background:var(--red)"></div><span class="nd-txt">CRITICAL — stop machine</span></div></div>
+        <div class="fc ok"><div class="fc-top"><div><div class="fc-name">Boda Engine 07</div><div class="fc-type">Motorcycle engine · Fleet bay</div></div><div class="fc-h" style="color:var(--green)">88</div></div><div class="fc-meta"><span class="tag">Class 1</span><span class="tag">2400 RPM</span><span class="tag">Node-01</span><span class="tag" style="color:var(--green)">ISO Zone A</span></div><div class="fc-mets"><div class="fm"><div class="fm-v">1.3</div><div class="fm-k">mm/s</div></div><div class="fm"><div class="fm-v">2.9</div><div class="fm-k">Kurtosis</div></div><div class="fm"><div class="fm-v">2.1</div><div class="fm-k">Crest</div></div></div><div class="mini-bar"><div class="mini-fill" style="width:88%;background:var(--green)"></div></div><div class="nd-row"><div class="nd-dot" style="background:var(--green)"></div><span class="nd-txt">No fault detected</span></div></div>
+      </div>
+    </div>
+
+    <!-- ── ALERTS ── -->
+    <div class="pnl" id="pnl-alerts">
+      <div class="sec-row" style="margin-bottom:14px"><span class="sec-title">Active alerts</span><span class="sec-action" onclick="nav('fleet',document.getElementById('sb-fleet'))">← Fleet</span></div>
+      <div class="al-list">
+        <div class="al crit" id="al1"><div class="al-sev" style="color:var(--red)">CRITICAL</div><div class="al-body"><div class="al-asset">HVAC Fan</div><div class="al-txt">Outer race failure (BPFO) · RMS 13.1 mm/s · ISO Zone D · Stop machine. Replace bearing.</div></div><div class="al-time">3 min ago</div><button class="res" onclick="resolveAl('al1')">Resolve</button></div>
+        <div class="al warn" id="al2"><div class="al-sev" style="color:var(--coral)">WARNING</div><div class="al-body"><div class="al-asset">Pump A3</div><div class="al-txt">Bearing wear detected · RMS 4.7 mm/s · ISO Zone C · Schedule maintenance within 30 days.</div></div><div class="al-time">14 min ago</div><button class="res" onclick="resolveAl('al2')">Resolve</button></div>
+      </div>
+    </div>
+
+    <!-- ── NODES ── -->
+    <div class="pnl" id="pnl-nodes">
+      <div class="sec-row" style="margin-bottom:14px"><span class="sec-title">Node inventory</span><span class="sec-action">Provision new node +</span></div>
+      <div class="node-grid">
+        <div class="nc"><div class="nc-top"><span class="nc-name">Node-01</span><span class="nc-badge on">online</span></div><div class="nc-rows"><div class="nc-r"><span>Model</span><span class="nc-rv">Samsung A50</span></div><div class="nc-r"><span>Android</span><span class="nc-rv">API 30</span></div><div class="nc-r"><span>Battery</span><span class="nc-rv" style="color:var(--green)">67% · 34°C</span></div><div class="nc-r"><span>Kiosk</span><span class="nc-rv">screen_pinned</span></div><div class="nc-r"><span>Mount</span><span class="nc-rv" style="color:var(--green)">excellent · 0.4ms</span></div><div class="nc-r"><span>Actual Hz</span><span class="nc-rv">197Hz</span></div><div class="nc-r"><span>Assets</span><span class="nc-rv" style="font-size:9px">Pump A3 · Boda 07</span></div></div></div>
+        <div class="nc"><div class="nc-top"><span class="nc-name">Node-02</span><span class="nc-badge on">online</span></div><div class="nc-rows"><div class="nc-r"><span>Model</span><span class="nc-rv">Xiaomi Redmi 7</span></div><div class="nc-r"><span>Android</span><span class="nc-rv">API 29</span></div><div class="nc-r"><span>Battery</span><span class="nc-rv" style="color:var(--green)">72% · 36°C</span></div><div class="nc-r"><span>Kiosk</span><span class="nc-rv">device_owner</span></div><div class="nc-r"><span>Mount</span><span class="nc-rv" style="color:var(--green)">good · 1.1ms</span></div><div class="nc-r"><span>Actual Hz</span><span class="nc-rv">203Hz</span></div><div class="nc-r"><span>Assets</span><span class="nc-rv" style="font-size:9px">Generator G1</span></div></div></div>
+        <div class="nc"><div class="nc-top"><span class="nc-name">Node-03</span><span class="nc-badge on">online</span></div><div class="nc-rows"><div class="nc-r"><span>Model</span><span class="nc-rv">Tecno Spark 6</span></div><div class="nc-r"><span>Android</span><span class="nc-rv">API 29</span></div><div class="nc-r"><span>Battery</span><span class="nc-rv" style="color:var(--green)">55% · 33°C</span></div><div class="nc-r"><span>Kiosk</span><span class="nc-rv">screen_pinned</span></div><div class="nc-r"><span>Mount</span><span class="nc-rv" style="color:var(--green)">good · 1.3ms</span></div><div class="nc-r"><span>Actual Hz</span><span class="nc-rv">191Hz</span></div><div class="nc-r"><span>Assets</span><span class="nc-rv" style="font-size:9px">Conveyor M2</span></div></div></div>
+        <div class="nc"><div class="nc-top"><span class="nc-name">Node-04</span><span class="nc-badge on">online</span></div><div class="nc-rows"><div class="nc-r"><span>Model</span><span class="nc-rv">Samsung Galaxy S6</span></div><div class="nc-r"><span>Android</span><span class="nc-rv">API 23</span></div><div class="nc-r"><span>Battery</span><span class="nc-rv" style="color:var(--amber)">41% · 38°C</span></div><div class="nc-r"><span>Kiosk</span><span class="nc-rv">inactive</span></div><div class="nc-r"><span>Mount</span><span class="nc-rv" style="color:var(--green)">excellent · 0.6ms</span></div><div class="nc-r"><span>Actual Hz</span><span class="nc-rv">188Hz</span></div><div class="nc-r"><span>Assets</span><span class="nc-rv" style="font-size:9px">HVAC Fan</span></div></div></div>
+      </div>
+    </div>
+
+    <!-- ── ISO 10816 ── -->
+    <div class="pnl" id="pnl-iso">
+      <div class="card" style="margin-bottom:14px">
+        <h3>ISO 10816-3 Velocity Thresholds — mm/s RMS</h3>
+        <p style="margin-bottom:12px">VibeScan reports in mm/s velocity so these values apply directly. The C++ engine integrates the FFT spectrum (divides each bin by 2πf × 1000) before computing RMS — not a raw acceleration reading.</p>
+        <table class="iso-t">
+          <tr><th class="zh">Class</th><th class="za">Zone A — Good</th><th class="zb">Zone B — OK</th><th class="zc">Zone C — Warn</th><th class="zd">Zone D — Danger</th></tr>
+          <tr><td>Class 1 — &lt;15 kW</td><td class="za">≤ 0.71</td><td class="zb">0.71–1.8</td><td class="zc">1.8–4.5</td><td class="zd">&gt; 4.5</td></tr>
+          <tr><td>Class 2 — 15–75 kW</td><td class="za">≤ 1.12</td><td class="zb">1.12–2.8</td><td class="zc">2.8–7.1</td><td class="zd">&gt; 7.1</td></tr>
+          <tr><td>Class 3 — &gt;75kW rigid</td><td class="za">≤ 1.8</td><td class="zb">1.8–4.5</td><td class="zc">4.5–11.2</td><td class="zd">&gt; 11.2</td></tr>
+          <tr><td>Class 4 — &gt;75kW flex</td><td class="za">≤ 2.8</td><td class="zb">2.8–7.1</td><td class="zc">7.1–18.0</td><td class="zd">&gt; 18.0</td></tr>
+        </table>
+      </div>
+      <div class="g2">
+        <div class="card"><h3>Why the 0.4 Hz ghost is gone</h3><p>The "ski-slope" leakage happens because the Hann window doesn't perfectly suppress a constant (gravity). Even after subtracting the per-window mean, the tapered centre samples carry a tiny residual. The fix: subtract the mean again <em>after</em> windowing. Then the peak detector ignores all bins below 2 Hz (the skip_bins threshold computed from actual sample rate). A stationary phone now correctly shows Peak Hz = 0.0.</p></div>
+        <div class="card"><h3>Why 1024 samples not 512</h3><p>Doubling the window from 512 to 1024 cuts frequency resolution from 0.39 Hz/bin to 0.195 Hz/bin. That means BPFO peaks are twice as sharp — a worn bearing at 89 Hz resolves into one clear spike instead of a blurry hill spanning 88–90 Hz. The 2 Hz skip zone now only discards 10 bins instead of 5, catching more real signal near 2 Hz.</p></div>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div class="pnl" id="pnl-settings">
+      <div class="g2">
+        <div class="card">
+          <h3>Node configuration</h3>
+          <div class="set-row"><div><div class="set-lbl">Machine class</div><div class="set-desc">Affects ISO 10816 thresholds</div></div><select class="sel" style="max-width:180px"><option>Class 1 — &lt;15 kW</option><option>Class 2 — 15–75 kW</option><option>Class 3 — &gt;75kW rigid</option><option>Class 4 — &gt;75kW flex</option></select></div>
+          <div class="set-row"><div><div class="set-lbl">Powerline notch</div><div class="set-desc">Removes grid interference from FFT</div></div><select class="sel" style="max-width:180px"><option>50 Hz (Kenya/EU)</option><option>60 Hz (US/JP)</option></select></div>
+          <div class="set-row"><div><div class="set-lbl">Kiosk mode</div><div class="set-desc">Single-purpose lock</div></div><span class="tag" style="color:var(--green);border:1px solid #1D9E7544">Screen pinned</span></div>
+          <div class="set-row"><div><div class="set-lbl">Battery guardian</div><div class="set-desc">30–70% charge cycle</div></div><span class="tag" style="color:var(--green);border:1px solid #1D9E7544">Active · 67% · 34°C</span></div>
+          <div class="set-row"><div><div class="set-lbl">Cloud sync</div><div class="set-desc">Outbox: 0 pending</div></div><span class="tag" style="color:var(--green);border:1px solid #1D9E7544">Online</span></div>
+          <div class="set-row"><div><div class="set-lbl">API endpoint</div><div class="set-desc">Private cloud override</div></div><input type="text" value="https://api.vibescan.io" style="background:var(--s3);border:1px solid var(--border2);border-radius:7px;padding:4px 9px;color:var(--text);font-size:10px;font-family:var(--mono);max-width:200px;outline:none"></div>
+          <div class="set-row"><div><div class="set-lbl">Account</div><div class="set-desc" id="set-email">demo@northmark.io</div></div><button style="font-size:11px;font-family:var(--mono);color:var(--red);background:none;border:none;cursor:pointer" onclick="doLogout()">Sign out</button></div>
+        </div>
+        <div class="card">
+          <h3>Engine diagnostics</h3>
+          <div class="set-row"><div class="set-lbl">Engine version</div><span class="tag">v3.0 calibrated</span></div>
+          <div class="set-row"><div class="set-lbl">Window size</div><span class="tag">1024 samples (doubled)</span></div>
+          <div class="set-row"><div class="set-lbl">Freq. resolution</div><span class="tag">0.195 Hz/bin</span></div>
+          <div class="set-row"><div class="set-lbl">Ski-slope fix</div><span class="tag">2× mean subtract</span><span class="tag">≥2Hz skip</span></div>
+          <div class="set-row"><div class="set-lbl">Gravity removal</div><span class="tag">Per-axis IIR α=0.85</span></div>
+          <div class="set-row"><div class="set-lbl">Units</div><span class="tag">mm/s velocity (ISO)</span></div>
+          <div class="set-row"><div class="set-lbl">Thread priority</div><span class="tag">SCHED_FIFO fallback -10</span></div>
+          <div class="set-row"><div class="set-lbl">Sample rate</div><span class="tag">Measured from timestamps</span></div>
+          <div class="set-row"><div class="set-lbl">Noise gate</div><span class="tag">0.02 m/s² squelch</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Auth ──────────────────────────────────────────────────────────────────────
+let user = null;
+
+function authTab(t, btn) {
+  document.querySelectorAll('.auth-tab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('pane-login').style.display    = t==='login'    ? '' : 'none';
+  document.getElementById('pane-register').style.display = t==='register' ? '' : 'none';
+}
+
+function doLogin() {
+  const e = document.getElementById('le').value.trim();
+  const p = document.getElementById('lp').value;
+  if (!e || !p) { document.getElementById('lerr').textContent = 'Fill all fields.'; return; }
+  if (e === 'demo@northmark.io' && p === 'demo1234') {
+    user = { email: e, org: 'Northmark Intelligence' }; bootApp();
+  } else {
+    document.getElementById('lerr').textContent = 'Invalid credentials. Try demo@northmark.io / demo1234';
+  }
+}
+
+function doRegister() {
+  const fn=document.getElementById('rfn').value.trim();
+  const ln=document.getElementById('rln').value.trim();
+  const e=document.getElementById('re').value.trim();
+  const o=document.getElementById('ro').value.trim();
+  const p=document.getElementById('rp').value;
+  if(!fn||!ln||!e||!o||!p){document.getElementById('rerr').textContent='Please fill all fields.';return;}
+  if(p.length<8){document.getElementById('rerr').textContent='Password must be at least 8 characters.';return;}
+  user = {email:e, org:o}; bootApp();
+}
+
+function bootApp() {
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('app').classList.add('on');
+  document.getElementById('tb-user').textContent = user.email + ' ↩';
+  document.getElementById('tb-org').textContent  = user.org;
+  document.getElementById('set-email').textContent = user.email;
+  startLive();
+}
+
+function doLogout() {
+  document.getElementById('auth').style.display = '';
+  document.getElementById('app').classList.remove('on');
+  user = null; simState('still', document.querySelector('[data-s=still]'));
+}
+
+// ── Nav ───────────────────────────────────────────────────────────────────────
+function nav(id, btn) {
+  document.querySelectorAll('.pnl').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('on'));
+  document.getElementById('pnl-'+id).classList.add('on');
+  (btn || document.getElementById('sb-'+id)).classList.add('on');
+  if (id==='scan') { setTimeout(()=>{drawSpec();drawTrend();},50); }
+}
+
+// ── Simulation state ──────────────────────────────────────────────────────────
+const ISO = [
+  [0.71,1.8,4.5],[1.12,2.8,7.1],[1.8,4.5,11.2],[2.8,7.1,18.0]
+];
+
+const STATES = {
+  still:    {h:95, mms:.42, ms2:.004, k:2.9, cr:1.8, hz:0,    conf:82, na:.03,
+             zone:'A',isoC:'iso-a',zt:'ISO Zone A — Good',zs:'RMS 0.42 mm/s · within new-machine limits.'},
+  worn:     {h:52, mms:4.7, ms2:.48,  k:6.1, cr:4.8, hz:28.3, conf:91, na:.18,
+             zone:'C',isoC:'iso-c',zt:'ISO Zone C — Unsatisfactory',zs:'RMS 4.7 mm/s · bearing wear. Schedule maintenance.'},
+  imbalance:{h:37, mms:6.3, ms2:.64,  k:3.1, cr:3.2, hz:25.0, conf:95, na:.16,
+             zone:'D',isoC:'iso-d',zt:'ISO Zone D — Danger',zs:'RMS 6.3 mm/s · rotor imbalance. Rebalance within 7 days.'},
+  critical: {h:9,  mms:13.1,ms2:1.33, k:9.2, cr:8.7, hz:20.0, conf:98, na:.45,
+             zone:'D',isoC:'iso-d',zt:'ISO Zone D — DANGER',zs:'RMS 13.1 mm/s · imminent failure. STOP MACHINE.'},
+  noise:    {h:100,mms:0.0, ms2:.008, k:3.0, cr:1.0, hz:0,    conf:0,  na:.004,
+             zone:'A',isoC:'iso-a',zt:'Signal too weak',zs:'Below noise floor. Place on a running machine.'},
+};
+
+let cs='still', rpm=1500, mc=0, pl=50;
+const hist = Array(60).fill(95);
+
+function j(v,s){ return +(v+(Math.random()-.5)*s).toFixed(3); }
+function j1(v,s){ return +(v+(Math.random()-.5)*s).toFixed(1); }
+function jI(v,s){ return Math.max(0,Math.round(v+(Math.random()-.5)*s)); }
+function colFor(z){ return{A:'var(--green)',B:'var(--amber)',C:'var(--coral)',D:'var(--red)'}[z]||'var(--muted)'; }
+
+function simState(key, btn) {
+  cs = key;
+  document.querySelectorAll('.sim-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  update();
+}
+
+function setRpm(v){ rpm=parseInt(v); document.getElementById('rpm-v').textContent=v+' RPM'; update(); }
+function setMC(v) { mc=parseInt(v); update(); }
+function setPl(v) { pl=parseInt(v); update(); }
+
+function isoZone(mms, cls) {
+  const t=ISO[cls];
+  if(mms<=t[0]) return 'A';
+  if(mms<=t[1]) return 'B';
+  if(mms<=t[2]) return 'C';
+  return 'D';
+}
+
+function update() {
+  const s = STATES[cs];
+  const realMms = j(s.mms, s.mms*.04+.01);
+  const realMs2 = j(s.ms2, s.ms2*.03+.001);
+  const realK   = j1(s.k, .15);
+  const realCr  = j1(s.cr, .08);
+  const zone    = isoZone(realMms, mc);
+  const col     = colFor(zone);
+
+  // Ring
+  const circ = 421, off = circ*(1-s.h/100);
+  document.getElementById('ring-arc').style.strokeDashoffset = off;
+  document.getElementById('ring-arc').style.stroke = col;
+  document.getElementById('h-num').textContent = s.h;
+  document.getElementById('h-num').style.color  = col;
+
+  // ISO banner
+  const bann = document.getElementById('iso-banner');
+  bann.className = 'iso-banner '+s.isoC;
+  document.getElementById('iso-ttl').textContent = s.zt;
+  document.getElementById('iso-sub').textContent = s.zs;
+
+  // Metrics
+  document.getElementById('mv-mms').textContent = realMms.toFixed(2);
+  document.getElementById('mv-mms').style.color = col;
+  document.getElementById('mv-ms2').textContent = realMs2.toFixed(3);
+  document.getElementById('mv-k').textContent   = realK;
+  document.getElementById('mv-k').style.color   = realK>6?'var(--red)':realK>4?'var(--amber)':'var(--text)';
+  document.getElementById('mv-cr').textContent  = realCr;
+  document.getElementById('mv-cr').style.color  = realCr>5?'var(--red)':realCr>3?'var(--amber)':'var(--text)';
+
+  // Peak Hz — noise/still = 0.0 (correct after ski-slope fix)
+  const realHz = s.hz > 0 ? j1(s.hz, .3) : 0.0;
+  document.getElementById('mv-hz').textContent = realHz.toFixed(1);
+  document.getElementById('mv-hz').style.color = realHz>0?'var(--text)':'var(--muted)';
+
+  // Confidence
+  const conf = s.conf;
+  const cCol = conf<30?'var(--red)':conf<60?'var(--amber)':'var(--green)';
+  document.getElementById('bf-conf').style.width      = conf+'%';
+  document.getElementById('bf-conf').style.background = cCol;
+  document.getElementById('bv-conf').textContent = conf+'%';
+  document.getElementById('bv-conf').style.color  = cCol;
+
+  // Actual rate (simulated drift)
+  const hz = 197 + Math.round((Math.random()-.5)*10);
+  document.getElementById('bf-rate').style.width = Math.min(100,((hz-150)/100)*100)+'%';
+  document.getElementById('bv-rate').textContent = hz+'Hz';
+  document.getElementById('tb-rate').textContent = '~'+hz+'Hz';
+
+  // BPFO energy
+  const bpfoPct = cs==='worn'?62:cs==='critical'?88:cs==='imbalance'?18:2;
+  document.getElementById('bf-bpfo').style.width      = bpfoPct+'%';
+  document.getElementById('bf-bpfo').style.background = bpfoPct>60?'var(--red)':bpfoPct>30?'var(--coral)':'var(--muted)';
+  document.getElementById('bv-bpfo').textContent = bpfoPct+'%';
+
+  // Pills
+  const setP = (id,txt,cls) => { const el=document.getElementById(id); el.textContent=txt; el.className='pill '+cls; };
+  setP('pl-conf','Confidence: '+conf+'%', conf>=60?'ok':conf>=30?'warn':'err');
+  setP('pl-rate','Rate: '+hz+'Hz','ok');
+  setP('pl-hz','Peak Hz: '+realHz.toFixed(1)+'Hz', realHz>0?'ok':'');
+  setP('pl-iso2','ISO Zone '+zone, zone==='A'||zone==='B'?'ok':zone==='C'?'warn':'err');
+  document.getElementById('tb-iso').textContent = 'ISO Zone '+zone;
+  document.getElementById('tb-iso').style.color = col;
+
+  // Health history
+  const jh = Math.min(100,Math.max(0,s.h+Math.round((Math.random()-.5)*3)));
+  hist.push(jh); if(hist.length>60) hist.shift();
+
+  drawSpec(); drawTrend();
+}
+
+// ── Spectrum canvas ────────────────────────────────────────────────────────────
+function drawSpec() {
+  const cv = document.getElementById('spec-cv');
+  if (!cv.offsetWidth) return;
+  const ctx = cv.getContext('2d');
+  const W = cv.offsetWidth * devicePixelRatio, H = 88;
+  cv.width = W; cv.height = H;
+  ctx.clearRect(0,0,W,H);
+
+  const s = STATES[cs];
+  const base = rpm/60;
+  const bins = 100;
+  const bw   = W/bins;
+
+  // Build velocity spectrum (bins 0..skip are zero — ski-slope zone)
+  // Bin resolution: 200/1024 ≈ 0.195 Hz. 2Hz / 0.195 ≈ bin 10.
+  const skipBin = Math.ceil(2.0 / (200/1024));   // ~10 bins hidden
+
+  const spec = [];
+  for (let i=0; i<bins; i++) {
+    if (i < skipBin) { spec.push(0); continue; }  // ski-slope zone zeroed
+    let a = 0;
+    const noise = (f, amp) => amp*(Math.sin(f*7.3)*.5+Math.sin(f*13.7)*.3+(Math.random()-.5)*.4);
+    if (cs==='noise')      a = noise(i, s.na);
+    else if(cs==='still')  a = .7*Math.exp(-((i-base)**2)/35)+.15*Math.exp(-((i-base*2)**2)/8)+noise(i,s.na);
+    else if(cs==='worn')   a = .5*Math.exp(-((i-base)**2)/28)+1.0*Math.exp(-((i-base*3.585)**2)/7)+.45*Math.exp(-((i-base*5.415)**2)/5)+noise(i,s.na);
+    else if(cs==='imbalance') a = 2.2*Math.exp(-((i-base)**2)/4)+.28*Math.exp(-((i-base*2)**2)/3)+noise(i,s.na);
+    else a = .4*Math.exp(-((i-base)**2)/22)+2.0*Math.exp(-((i-base*3.585)**2)/5)+1.6*Math.exp(-((i-base*5.415)**2)/4)+noise(i,s.na);
+    // velocity integration: a/omega * 1000
+    const omega = 2*Math.PI*(i*2); // simplified: i*2Hz per bin approx
+    spec.push(Math.max(0, i>0 ? (a/omega)*60 : 0));
+  }
+
+  const max = Math.max(...spec)*1.2 || .01;
+  spec.forEach((v,i) => {
+    const r=v/max, bh=r*(H-16), x=i*bw;
+    // Ski-slope zone: show as very faint to indicate it's intentionally hidden
+    if (i < skipBin) {
+      ctx.fillStyle='#35404d44';
+      ctx.fillRect(x, H-16-2, bw-1, 2);
+      return;
+    }
+    ctx.fillStyle=r<.5?'#1D9E7599':r<.8?'#BA751799':'#E24B4A99';
+    ctx.fillRect(x, H-16-bh, bw-1, bh);
+  });
+
+  // Skip zone label
+  const szX = skipBin*bw;
+  ctx.fillStyle='#35404d';
+  ctx.fillRect(0, 0, szX, H-16);
+  ctx.fillStyle='#40444d';
+  ctx.font = "8px 'JetBrains Mono'";
+  ctx.fillText('<2Hz hidden', 2, H-20);
+
+  // Shaft marker
+  const shX = (base/100)*W;
+  if (shX > szX && shX < W) {
+    ctx.strokeStyle='#7F77DD'; ctx.lineWidth=1.5; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(shX,0); ctx.lineTo(shX,H-16); ctx.stroke();
+    ctx.fillStyle='#7F77DD'; ctx.font="8px 'JetBrains Mono'";
+    ctx.fillText('1×',shX+2,10);
+  }
+
+  // BPFO/BPFI
+  [[base*3.585,'#D85A30','BPFO'],[base*5.415,'#BA7517','BPFI']].forEach(([f,col,lbl])=>{
+    const x=(f/100)*W;
+    if(x>szX&&x<W){ctx.strokeStyle=col;ctx.lineWidth=1;ctx.setLineDash([3,3]);ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H-16);ctx.stroke();ctx.setLineDash([]);ctx.fillStyle=col;ctx.fillText(lbl,x+2,20);}
+  });
+
+  // X axis
+  ctx.fillStyle='#555f6e'; ctx.font="8px 'JetBrains Mono'"; ctx.setLineDash([]);
+  ctx.fillText('0',2,H-4); ctx.fillText('50Hz',W/2-12,H-4); ctx.fillText('100Hz',W-36,H-4);
+}
+
+// ── Trend canvas ───────────────────────────────────────────────────────────────
+function drawTrend() {
+  const cv = document.getElementById('trend-cv');
+  if (!cv.offsetWidth) return;
+  const ctx = cv.getContext('2d');
+  const W = cv.offsetWidth * devicePixelRatio, H = 52;
+  cv.width = W; cv.height = H;
+  ctx.clearRect(0,0,W,H);
+  const pts = hist, sw = W/(pts.length-1);
+  ctx.beginPath(); ctx.moveTo(0, H-(pts[0]/100)*(H-8));
+  pts.forEach((v,i) => ctx.lineTo(i*sw, H-(v/100)*(H-8)));
+  ctx.lineTo(W,H); ctx.lineTo(0,H); ctx.closePath();
+  const g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,'#1D9E7530'); g.addColorStop(1,'#1D9E7500');
+  ctx.fillStyle=g; ctx.fill();
+  ctx.beginPath(); ctx.moveTo(0,H-(pts[0]/100)*(H-8));
+  pts.forEach((v,i) => ctx.lineTo(i*sw, H-(v/100)*(H-8)));
+  ctx.strokeStyle='#1D9E75'; ctx.lineWidth=1.5; ctx.stroke();
+}
+
+// ── Alerts ────────────────────────────────────────────────────────────────────
+function resolveAl(id) {
+  const el = document.getElementById(id);
+  if (el) { el.style.opacity='.25'; el.style.transition='opacity .4s'; setTimeout(()=>el.remove(),400); }
+  const badge = document.getElementById('al-badge');
+  const n = Math.max(0,(parseInt(badge.textContent)||0)-1);
+  badge.textContent = n; if (!n) badge.style.display='none';
+}
+
+// ── Live update loop ──────────────────────────────────────────────────────────
+function startLive() { update(); setInterval(update, 1500); }
+</script>
+</body>
+</html>

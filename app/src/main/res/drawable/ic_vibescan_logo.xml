@@ -1,0 +1,26 @@
+<!-- app/src/main/res/drawable/ic_vibescan_logo.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="120dp"
+    android:height="120dp"
+    android:viewportWidth="120"
+    android:viewportHeight="120">
+
+    <!-- Outer circle -->
+    <path
+        android:fillColor="@color/vibe_green"
+        android:pathData="M60,60m-50,0a50,50 0,1,1 100,0a50,50 0,1,1 -100,0" />
+
+    <!-- Waveform bars (white) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M45,50h6v20h-6z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,40h6v40h-6z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M63,35h6v50h-6z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M72,45h6v30h-6z" />
+</vector>

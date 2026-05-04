@@ -1,0 +1,6 @@
+# ninja log v5
+1	1392	7994522636686891	CMakeFiles/kissfft.dir/kissfft/kiss_fft.c.o	2ccec892c58c3052
+1397	2436	7994522643828704	libkissfft.a	ca892a6ad8c32a91
+33	3480	7994522657726427	CMakeFiles/vibescan_engine.dir/adaptive_filter.cpp.o	36fd1e587d5c4501
+17	3702	7994522660005011	CMakeFiles/vibescan_engine.dir/vibescan_engine.cpp.o	7d493cf794349855
+3703	4045	7994522663452060	C:/Users/user/Downloads/vibescan_source/app/build/intermediates/cxx/Debug/3q39194s/obj/arm64-v8a/libvibescan_engine.so	ccc5095859483959

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/scanFragment">
+
+    <fragment
+        android:id="@+id/scanFragment"
+        android:name="com.northmark.vibescan.ui.scan.ScanFragment"
+        android:label="Scan"
+        tools:layout="@layout/fragment_scan">
+        <action
+            android:id="@+id/action_scanFragment_to_analysisFragment"
+            app:destination="@id/analysisFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/analysisFragment"
+        android:name="com.northmark.vibescan.ui.analysis.AnalysisFragment"
+        android:label="Analysis" />
+
+    <fragment
+        android:id="@+id/historyFragment"
+        android:name="com.northmark.vibescan.ui.history.HistoryFragment"
+        android:label="History"
+        tools:layout="@layout/fragment_history">
+        <action
+            android:id="@+id/action_historyFragment_to_assetDetailFragment"
+            app:destination="@id/assetDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/assetDetailFragment"
+        android:name="com.northmark.vibescan.ui.history.AssetDetailFragment"
+        android:label="Asset Detail">
+        <argument
+            android:name="assetId"
+            app:argType="long" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.northmark.vibescan.ui.settings.SettingsFragment"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
